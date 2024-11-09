@@ -116,7 +116,7 @@ Comprobar la estructura del proyecto con el comando `tree` ó `ls -lR`
 
 - Script SQL para la inserción de los datos iniciales (`datos_iniciales.sql`)
 
-- Modelo entidad-relación: en formato PNG ([modelo_ER.png ](sql/modelo_ER.png)) y código fuente [PlantUML](https://plantuml.com/es/) ([modelo_ER.puml](doc/modelo_ER.puml))
+- Modelo entidad-relación: en formato PNG ([modelo_ER.png ](sql/modelo_ER.png)) y código fuente [PlantUML](https://plantuml.com/es/) ([modelo_ER.puml](sql/modelo_ER.puml))
 
   
 
