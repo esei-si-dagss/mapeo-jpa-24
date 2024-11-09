@@ -1,0 +1,81 @@
+@startchen
+!theme aws-orange
+
+
+entity T_EMPLEADO {
+   DNI <<key>>
+   NOMBRE
+   CATEGORIA
+   NUM_DEPTO_FK
+}
+
+entity T_DEPARTAMENTO {
+   NUM_DEPTO <<key>>
+   NOMBRE
+   DESCRIPCION
+   UBICACION
+   JEFE_DNI_FK 
+}
+
+entity T_PROYECTO {
+   ID_PROYECTO <<key>>
+   TITULO
+   DESCRIPCION
+   FECHA_INICIO
+   FECHA_FIN
+   ESTADO_PROY
+   RESPONSABLE_DNI_FK
+   DEPTO_NUM_FK
+}
+
+entity T_TAREA {
+   ID_TAREA <<key>>
+   NOMBRE
+   DESCRIPCION
+   FECHA_INICIO
+   FECHA_FIN
+   ESTADO_TAREA
+   PROYECTO_ID_FK
+   RESPONSABLE_DNI_FK
+}
+
+relationship trabaja {
+}
+
+T_EMPLEADO -N- trabaja
+trabaja -1- T_DEPARTAMENTO
+
+relationship dirige {
+}
+ 
+T_EMPLEADO -1- dirige
+dirige -1- T_DEPARTAMENTO
+
+relationship es_responsable {
+}
+T_EMPLEADO -1- es_responsable
+es_responsable -N- T_PROYECTO
+
+relationship participa {
+   EMPLEADO_DNI_FK
+   TAREA_ID_FK
+}
+
+
+relationship es_responsable_tarea {
+}
+
+T_EMPLEADO -1- es_responsable_tarea
+es_responsable_tarea -N- T_TAREA
+
+T_EMPLEADO -N- participa
+participa -M- T_TAREA
+
+relationship tiene {
+}
+
+T_PROYECTO -1- tiene
+tiene -N- T_TAREA
+
+
+@endchen
