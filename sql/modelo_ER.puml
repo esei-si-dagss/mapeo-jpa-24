@@ -78,4 +78,11 @@ T_PROYECTO -1- tiene
 tiene -N- T_TAREA
 
 
+relationship es_asignado {
+}
+
+T_DEPARTAMENTO -1- es_asignado
+es_asignado -N- T_PROYECTO
+
+
 @endchen

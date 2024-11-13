@@ -66,8 +66,8 @@ Desde la raíz del proyecto
 ```sh
 $ cd mapeo-jpa-24
 
-$ mysql -u dagss -p -D pruebas_dagss << sql/script_de_creacion.sql 
-$ mysql -u dagss -p -D pruebas_dagss << sql/datos_iniciales.sql  
+$ mysql -u dagss -p -D pruebas_dagss < sql/script_de_creacion.sql 
+$ mysql -u dagss -p -D pruebas_dagss < sql/datos_iniciales.sql
   
        #[en ambos casos pedirá la contraseña del usuario 'dagss']
 ```
@@ -76,7 +76,7 @@ $ mysql -u dagss -p -D pruebas_dagss << sql/datos_iniciales.sql
 
 ## 3.  Revisión del código de proyecto
 
-Comprobar la estructura del proyecto con el comando `tree` ó `ls -lR`
+Comprobar la estructura del proyecto con el comando `tree` ó `ls -lR`:
 
 ```
 .
@@ -136,8 +136,8 @@ Configuración del proyecto [Maven](https://maven.apache.org/).
 - **Lombok** (`lombok`, versión 1.18.34): Librería que genera implementaciones "automáticas" de notaciones de código de uso común (getters, setters, constructores,`toString()`, `hashCode()`, `equals()`, etc)
 
   - Se utiliza para proporcionar implementaciones de esos métodos en las entidades JPA.
-  - Se hace uso de la anotación [`@Buider`](https://projectlombok.org/features/Builder) para dotar a las entidades de una _builder API_ que simplifique la creación de nuevos instancias (permite evitar el uso de múltiples constructores complejos)
-  - Detalles en [Lombok features](https://projectlombok.org/features/)
+  - Se hace uso de la anotación [`@Builder`](https://projectlombok.org/features/Builder) para dotar a las entidades de una _builder API_ que simplifique la creación de nuevos instancias (permite evitar el uso de múltiples constructores complejos).
+  - Detalles en [Lombok features](https://projectlombok.org/features/).
 
 - **MySQL connector** (`mysql-connector-j`, version 9.1.0): Implementación del driver [JDBC](https://es.wikipedia.org/wiki/Java_Database_Connectivity) que ofrece acceso a bajo nivel a servidores MySQL Server y MariaDB.
 
@@ -170,7 +170,7 @@ Incluye una función `main()` de ejemplo que:
 
 En el fichero `src/resources/META_INF/persistence.xml`se define la **Persistence Unit** de la aplicación [[más detalles en espeficicación JPA 3.1](https://jakarta.ee/specifications/persistence/3.1/jakarta-persistence-spec-3.1#persistence-unit)]
 
-- Declara una _Persistence Unit_ de nombre `mapeo-PU`, indicando que la gestión de transacción será "manual" (`transaction-type="RESOURCE_LOCAL"`)
+- Declara una _Persistence Unit_ de nombre `mapeo-PU`, indicando que la gestión de transacción será "manual" (`transaction-type="RESOURCE_LOCAL"`).
 
 - Indica que se utilizará la implementación de JPA proporcionada por Hibernate (`org.hibernate.jpa.HibernatePersistenceProvider`) y enumera la lista de tipos de entidades a gestionar.
 
@@ -180,7 +180,7 @@ En el fichero `src/resources/META_INF/persistence.xml`se define la **Persistence
 
   - Puede cambiarse a `create` para forzar la creación desde cero las tablas de la Base de Datos conforme a lo indicado en las anotaciones JPA (fallará si la BDya existe) o a `drop-and-create`, que elimina las tablas (junto con los datos almacenados) y las crea de nuevo automáticamente [[más detalles en JEE  Tutorial](https://jakarta.ee/learn/docs/jakartaee-tutorial/current/persist/persistence-intro/persistence-intro.html#_configuring_an_application_to_create_or_drop_database_tables)]
 
-- Opcionalmente, pueden añadirse _properties_ específicas de Hibernate ORM (`hibernate.*`) para ajustar detalles del mapeo JPA o para habilitar el log por pantalla de las consultas SQL generadas por Hibernate (`hibernate.show_sql`, `hibernate.format_sql`)
+- Opcionalmente, pueden añadirse _properties_ específicas de Hibernate ORM (`hiberbate.*`) para ajustar detalles del mapeo JPA o para habilitar el log por pantalla de las consultas SQL generadas por Hibernate (`hibernate.show_sql`, `hibernate.format_sql`).
 
     
 
@@ -199,7 +199,7 @@ se obtiene una excepción `UnknownEntityException` indicando que no están defin
 
 Es necesario añadir las anotaciones de JPA para definir las entidades del modelo y mapear sus atributos y relaciones de forma que sea posible mapear las tablas de la Base de Datos a los objetos Java definidos en el paquete `es.uvigo.dagss.mapeo.entidades`.
 
-- En su versión actual, las entidades de ese paquete (`Departamento, Empleado, Proyecto, Tarea`) **sólo** tienen las **anotaciones de Lombok** necesarias para hacerlas funcionales como _Java Beans_ (constructor vacio, _getters_ y _setters_) y para ofrece una _Builder API_
+- En su versión actual, las entidades de ese paquete (`Departamento, Empleado, Proyecto, Tarea`) **sólo** tienen las **anotaciones de Lombok** necesarias para hacerlas funcionales como _Java Beans_ (constructor vacio, _getters_ y _setters_) y para ofrecer una _Builder API_.
 
 **Pasos a seguir**
 
@@ -208,12 +208,11 @@ Es necesario añadir las anotaciones de JPA para definir las entidades del model
    - En **1** `Departamento` hay **1** `Empleado` que actúa como jefe de departamento y cada jefe sólo puede dirigir **1** `Departamento`
    - En **1** `Proyecto` se definen **N** `Tareas` y cada `Tarea` es exclusiva del `Proyecto` al que pertenece
    - En **1** `Proyecto` hay **1** `Empleado` que actúa como responsable, pero un `Empleado` puede ser responsable de **N** `Proyectos` 
-   - Cada `Proyecto` está asignado a **1** `Departamento` y un `Departamento` puede tener asignados **N** `Proyectos`
-   -  En una `Tarea` participan **N** `Empleados` y cada `Empleado` puede participar en **M** `Tareas`
+   - En una `Tarea` participan **N** `Empleados` y cada `Empleado` puede participar en **M** `Tareas`
    - En **1** `Tarea` hay **1** `Empleado` que actúa como responsable, pero un `Empleado` puede ser responsable de **N** `Tareas` 
-   
-   **Nota:** Para facilitar la comprensión del ejemplo, en el modelo E-R se utilizan los nombres de las tablas y de las columnas de la Base de Datos (incluidas las claves foráneas), no los nombres y atributos de las entidades Java 
-   
+
+   **Nota:** En el modelo E-R se utilizan los nombres de las tablas y de las columnas de la Base de Datos, no los nombres y atributos de las entidades Java 
+
 2. Añadir las anotaciones `@Entity` en las clases que correspondan y ajustar con `@Table` la vinculación con los nombres de las tablas de la Base de Datos
 
 3. Añadir las anotacicones `@Id` en los atributos clave de cada entidad. 
@@ -239,7 +238,7 @@ $ mvn package
 $ mvn exec:java -Dexec.mainClass="es.uvigo.dagss.mapeo.Main" 
 ```
 
-Obteniendo una salida similar a :
+Obteniendo una salida similar a:
 
 ```
 [PRUEBA JPA]: --------------------------------------
@@ -267,10 +266,9 @@ Obteniendo una salida similar a :
 [PRUEBA JPA]: --------------------------------------
 ```
 
-**NOTA:** Si se quiere comprobar cómo son las sentencias SQL que va generando Hibernate, se pueden descomentar las siguientes lineas en el fichero `persistence.xml`
+**NOTA:** Si se quiere comprobar cómo son las sentencias SQL que va generando Hibernate, se pueden descomentar las siguientes lineas en el fichero `persistence.xml`:
 
 ```xml
 <property name="hibernate.show_sql" value="true"/>
 <property name="hibernate.format_sql" value="true"/>
 ```
-
