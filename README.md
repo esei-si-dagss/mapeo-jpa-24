@@ -57,7 +57,7 @@ URL del proyecto: [https://github.com/esei-si-dagss/mapeo-jpa-24](https://github
 	```sh
 	$ wget https://github.com/esei-si-dagss/mapeo-jpa-24/archive/refs/heads/main.zip
 	$ unzip main.zip
-	$ mv mapeo-jpa-24-main
+	$ mv mapeo-jpa-24-main mapeo-jpa-24
 	```
 
 ### Creación de tablas y carga de datos iniciales
@@ -66,8 +66,8 @@ Desde la raíz del proyecto
 ```sh
 $ cd mapeo-jpa-24
 
-$ mysql -u dagss -p -D pruebas_dagss << sql/script_de_creacion.sql 
-$ mysql -u dagss -p -D pruebas_dagss << sql/datos_iniciales.sql  
+$ mysql -u dagss -p -D pruebas_dagss < sql/script_de_creacion.sql 
+$ mysql -u dagss -p -D pruebas_dagss < sql/datos_iniciales.sql  
   
        #[en ambos casos pedirá la contraseña del usuario 'dagss']
 ```
@@ -76,7 +76,7 @@ $ mysql -u dagss -p -D pruebas_dagss << sql/datos_iniciales.sql
 
 ## 3.  Revisión del código de proyecto
 
-Comprobar la estructura del proyecto con el comando `tree` ó `ls -lR`
+Comprobar la estructura del proyecto con el comando `tree` ó `ls -lR`:
 
 ```
 .
@@ -136,8 +136,8 @@ Configuración del proyecto [Maven](https://maven.apache.org/).
 - **Lombok** (`lombok`, versión 1.18.34): Librería que genera implementaciones "automáticas" de notaciones de código de uso común (getters, setters, constructores,`toString()`, `hashCode()`, `equals()`, etc)
 
   - Se utiliza para proporcionar implementaciones de esos métodos en las entidades JPA.
-  - Se hace uso de la anotación [`@Buider`](https://projectlombok.org/features/Builder) para dotar a las entidades de una _builder API_ que simplifique la creación de nuevos instancias (permite evitar el uso de múltiples constructores complejos)
-  - Detalles en [Lombok features](https://projectlombok.org/features/)
+  - Se hace uso de la anotación [`@Buider`](https://projectlombok.org/features/Builder) para dotar a las entidades de una _builder API_ que simplifique la creación de nuevos instancias (permite evitar el uso de múltiples constructores complejos).
+  - Detalles en [Lombok features](https://projectlombok.org/features/).
 
 - **MySQL connector** (`mysql-connector-j`, version 9.1.0): Implementación del driver [JDBC](https://es.wikipedia.org/wiki/Java_Database_Connectivity) que ofrece acceso a bajo nivel a servidores MySQL Server y MariaDB.
 
@@ -170,17 +170,17 @@ Incluye una función `main()` de ejemplo que:
 
 En el fichero `src/resources/META_INF/persistence.xml`se define la **Persistence Unit** de la aplicación [[más detalles en espeficicación JPA 3.1](https://jakarta.ee/specifications/persistence/3.1/jakarta-persistence-spec-3.1#persistence-unit)]
 
-- Declara una _Persistence Unit_ de nombre `mapeo-PU`, indicando que la gestión de transacción será "manual" (`transaction-type="RESOURCE_LOCAL"`)
+- Declara una _Persistence Unit_ de nombre `mapeo-PU`, indicando que la gestión de transacción será "manual" (`transaction-type="RESOURCE_LOCAL"`).
 
 - Indica que se utilizará la implementación de JPA proporcionada por Hibernate (`org.hibernate.jpa.HibernatePersistenceProvider`) y enumera la lista de tipos de entidades a gestionar.
 
-- Contiene la información necesaria para establecer la conexión con la Base de Datos utilizada  (parámetros`jakarta.persistence.jdbc.{url, user, password}`) e indica que se usará el Driver JDBC para MySQL/MariaDB (`com.mysql.cj.jdbc.Driver`)
+- Contiene la información necesaria para establecer la conexión con la Base de Datos utilizada  (parámetros`jakarta.persistence.jdbc.{url, user, password}`) e indica que se usará el Driver JDBC para MySQL/MariaDB (`com.mysql.cj.jdbc.Driver`).
 
 - La _property_ `jakarta.persistence.schema-generation.database.action` tiene el valor `none` que indica que no se actuará sobre la Base de Datos 
 
   - Puede cambiarse a `create` para forzar la creación desde cero las tablas de la Base de Datos conforme a lo indicado en las anotaciones JPA (fallará si la BDya existe) o a `drop-and-create`, que elimina las tablas (junto con los datos almacenados) y las crea de nuevo automáticamente [[más detalles en JEE  Tutorial](https://jakarta.ee/learn/docs/jakartaee-tutorial/current/persist/persistence-intro/persistence-intro.html#_configuring_an_application_to_create_or_drop_database_tables)]
 
-- Opcionalmente, pueden añadirse _properties_ específicas de Hibernate ORM (`hibernate.*`) para ajustar detalles del mapeo JPA o para habilitar el log por pantalla de las consultas SQL generadas por Hibernate (`hibernate.show_sql`, `hibernate.format_sql`)
+- Opcionalmente, pueden añadirse _properties_ específicas de Hibernate ORM (`hibernate.*`) para ajustar detalles del mapeo JPA o para habilitar el log por pantalla de las consultas SQL generadas por Hibernate (`hibernate.show_sql`, `hibernate.format_sql`).
 
     
 
@@ -199,7 +199,7 @@ se obtiene una excepción `UnknownEntityException` indicando que no están defin
 
 Es necesario añadir las anotaciones de JPA para definir las entidades del modelo y mapear sus atributos y relaciones de forma que sea posible mapear las tablas de la Base de Datos a los objetos Java definidos en el paquete `es.uvigo.dagss.mapeo.entidades`.
 
-- En su versión actual, las entidades de ese paquete (`Departamento, Empleado, Proyecto, Tarea`) **sólo** tienen las **anotaciones de Lombok** necesarias para hacerlas funcionales como _Java Beans_ (constructor vacio, _getters_ y _setters_) y para ofrece una _Builder API_
+- En su versión actual, las entidades de ese paquete (`Departamento, Empleado, Proyecto, Tarea`) **sólo** tienen las **anotaciones de Lombok** necesarias para hacerlas funcionales como _Java Beans_ (constructor vacio, _getters_ y _setters_) y para ofrece una _Builder API_.
 
 **Pasos a seguir**
 
@@ -239,7 +239,7 @@ $ mvn package
 $ mvn exec:java -Dexec.mainClass="es.uvigo.dagss.mapeo.Main" 
 ```
 
-Obteniendo una salida similar a :
+Obteniendo una salida similar a:
 
 ```
 [PRUEBA JPA]: --------------------------------------
@@ -267,7 +267,7 @@ Obteniendo una salida similar a :
 [PRUEBA JPA]: --------------------------------------
 ```
 
-**NOTA:** Si se quiere comprobar cómo son las sentencias SQL que va generando Hibernate, se pueden descomentar las siguientes lineas en el fichero `persistence.xml`
+**NOTA:** Si se quiere comprobar cómo son las sentencias SQL que va generando Hibernate, se pueden descomentar las siguientes lineas en el fichero `persistence.xml`:
 
 ```xml
 <property name="hibernate.show_sql" value="true"/>
